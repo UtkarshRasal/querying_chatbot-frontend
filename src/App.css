@@ -10,6 +10,38 @@ body {
   color: #d1d5db;
 }
 
+.auth-container {
+  background-color: #40414f;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b3b48;
+  color: #d1d5db;
+}
+
+.auth-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
 .chat-container {
   width: 800px;
   max-width: 800px;

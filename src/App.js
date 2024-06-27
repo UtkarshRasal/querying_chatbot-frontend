@@ -1,59 +1,28 @@
-// src/App.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignUp from "./SignUp";
+import Login from "./Login";
+import Chat from "./Chat";
 import './App.css';
 
 function App() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidXNlcm5hbWUiOiJ1dGthcnNocmFzYWwiLCJpZCI6IjY2N2M2ZjRkMjFlYjliMmIzM2RhOGY5YSJ9LCJleHAiOjE3MTk1MTgwNzh9.9YpuWQ-saBrR6ajbdZfb3G5D9BKaew-IKDTGYc3zDQk"; // Replace with actual token logic
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    const userMessage = { message: input };
-    setMessages([...messages, { user: "user", text: input }]);
-    setInput("");
-
-    const response = await fetch("http://localhost:8000/query_chatbot/v1/api/chat/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(userMessage)
-    });
-
-    const data = await response.json();
-    setMessages([...messages, { user: "user", text: input }, { user: "bot", text: data.botResponse.response.reply }]);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      sendMessage();
-    }
-  };
+  const [token, setToken] = useState(localStorage.getItem("access_token") || "" );
+  useEffect(()=>{
+    localStorage.setItem('access_token', token)
+  }, [token])
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">Chatbot</div>
-      <div className="chat-body">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.user}`}>
-            <div className="text">{msg.text}</div>
-          </div>
-        ))}
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login setToken={setToken} />} />
+          <Route path="/chat" element={<Chat token={token} />} />
+          <Route path="/" element={<Login setToken={setToken} />} />
+        </Routes>
       </div>
-      <div className="chat-footer">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-          className="chat-input"
-          placeholder="Type a message..."
-        />
-      </div>
-    </div>
+    </Router>
   );
 }
 
