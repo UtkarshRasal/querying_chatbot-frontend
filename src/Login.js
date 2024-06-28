@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import './Login.css';
@@ -8,12 +8,16 @@ const Login = ({ setToken }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(localStorage.getItem('access_token')) {
+      navigate('/chat')
+    }
+  })
+
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:8000/query_chatbot/v1/api/auth/login", { username, password });
-      console.log(1, response)
       let _response = await response.data
-      console.log(2, _response)
 
       setToken(_response.user.access_token);
 
