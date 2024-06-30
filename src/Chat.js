@@ -11,12 +11,11 @@ const Chat = ({ token }) => {
   const chatContainerRef = useRef(null)
 
   useEffect(() => {
-    console.log({token: localStorage.getItem('access_token')})
     if (localStorage.getItem('access_token') == null || localStorage.getItem('access_token') == '') {
       navigate('/login')
     }
-  })
-
+  }, [])
+  
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
@@ -37,7 +36,7 @@ const Chat = ({ token }) => {
     setInput("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/query_chatbot/v1/api/chat/messages", userMessage, {
+      const response = await axios.post("http://localhost:8000/query_chatbot/v1/api/chat/messages", userMessage, {
         headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
       });
       let _response = await response.data
@@ -228,6 +227,7 @@ const Chat = ({ token }) => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          ref={chatContainerRef}
           onKeyPress={handleKeyPress}
           className="chat-input"
           placeholder="Type a message..."

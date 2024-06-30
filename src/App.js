@@ -8,15 +8,22 @@ import './App.css';
 
 function App() {
   // const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [token, setToken] = useState(localStorage.getItem("access_token") || "" );
   useEffect(()=>{
     localStorage.setItem('access_token', token)
   }, [token])
 
+  useEffect(()=> {
+    if(token) {
+      setIsLoggedIn(true)
+    }
+  }, [isLoggedIn])
+
   return (
     <Router>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="App">
         <Routes>
           <Route path="/signup" element={<SignUp />} />

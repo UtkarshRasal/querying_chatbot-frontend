@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+  
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -13,6 +13,10 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log('logged in')
+  }, [isLoggedIn])
+
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     setIsLoggedIn(false);
@@ -21,7 +25,7 @@ const Navbar = () => {
   console.log({isLoggedIn})
   return (
     <div className="navbar">
-      <div className="navbar-brand">Chatbot App</div>
+      <div className="navbar-brand">Querying Chatbot</div>
       <div className="navbar-links">
         {!isLoggedIn ? (
           <>
